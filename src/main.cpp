@@ -6,7 +6,9 @@
 #include "Eigen-3.3/Eigen/Core"
 #include "Eigen-3.3/Eigen/QR"
 #include "helpers.h"
+#include "spline.h"
 #include "json.hpp"
+#include "vehicle.cpp"
 
 // for convenience
 using nlohmann::json;
@@ -48,6 +50,7 @@ int main() {
     map_waypoints_s.push_back(s);
     map_waypoints_dx.push_back(d_x);
     map_waypoints_dy.push_back(d_y);
+
   }
 
   h.onMessage([&map_waypoints_x,&map_waypoints_y,&map_waypoints_s,
@@ -88,17 +91,30 @@ int main() {
           //   of the road.
           auto sensor_fusion = j[1]["sensor_fusion"];
 
+	  double car_yaw_rad = deg2rad(car_yaw);
+
+          if (previous_path_x.size() > 0)
+  	  {
+	      car_s = end_path_s;
+          }
+
+	  Vehicle ego(car_x, car_y, car_s, car_d, car_yaw, previous_path_x, previous_path_y);
+		
+	  vector<Vehicle> vehicles;
+          for (auto v_data : sensor_fusion)
+          {
+            auto speed = getSpeed(v_data[3], v_data[4]);
+            Vehicle v = Vehicle(v_data[0], v_data[1], v_data[2], v_data[5], v_data[6], speed);
+            vehicles.push_back(v);                        
+          }
+
+          ego.setVehicleParams(vehicles);
+
+	  auto actual_path = ego.processTrajectory(map_waypoints_s, map_waypoints_x, map_waypoints_y);
+	  auto next_x_vals = actual_path[0];
+          auto next_y_vals = actual_path[1];
+
           json msgJson;
-
-          vector<double> next_x_vals;
-          vector<double> next_y_vals;
-
-          /**
-           * TODO: define a path made up of (x,y) points that the car will visit
-           *   sequentially every .02 seconds
-           */
-
-
           msgJson["next_x"] = next_x_vals;
           msgJson["next_y"] = next_y_vals;
 

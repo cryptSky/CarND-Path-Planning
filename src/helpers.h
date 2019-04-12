@@ -9,6 +9,10 @@
 using std::string;
 using std::vector;
 
+const int LANES_COUNT = 3;
+const double MAX_TRACK_S = 6945.554;
+
+
 // Checks if the SocketIO event has JSON data.
 // If there is data the JSON object in string format will be returned,
 //   else the empty string "" will be returned.
@@ -37,6 +41,30 @@ double rad2deg(double x) { return x * 180 / pi(); }
 // Calculate distance between two points
 double distance(double x1, double y1, double x2, double y2) {
   return sqrt((x2-x1)*(x2-x1)+(y2-y1)*(y2-y1));
+}
+
+double getSpeed(double vx, double vy)
+{
+    return sqrt(vx * vx + vy * vy);
+}
+
+double getTheta(double vx, double vy)
+{
+	return atan2(vy, vx);
+}
+
+int calculateLane(double d)
+{
+    int lane = 1;
+    if (d >= 0 && d < 4) {
+	lane = 0;
+    } else if (d >= 4 && d < 8) {
+	lane = 1;
+    } else if (d >= 8 && d <= 12) {
+	lane = 2;
+    }
+
+    return lane;
 }
 
 // Calculate closest waypoint to current x, y position
