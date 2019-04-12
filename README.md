@@ -6,7 +6,7 @@ In this project your goal is to safely navigate around a virtual highway with ot
 
 ### Implementation
 
-My implementation consists of Vehicle data type, which can reresent two types of vehicles - either ego or any other. They are distinquished by calling constructors with different overrides. The constructor for creating Ego vehicle contains such parameters as x,y,s,d positions, yaw and previous paths for x and y coordinates. Other vehicles constructor takes id and x,y,s,d position parameters, speed. To solve this task I implemented two methods in Vehicle class: 
+My implementation consists of ``Vehicle`` data type, which can reresent two types of vehicles - either ego or any other. They are distinquished by calling constructors with different overrides. The constructor for creating Ego vehicle contains such parameters as x,y,s,d positions, yaw and previous paths for x and y coordinates. Other vehicles constructor takes id and x,y,s,d position parameters, speed. To solve this task I implemented two methods in ``Vehicle`` class: 
 ```cpp
 void setVehicleParams(const vector<Vehicle>& vehicles);
 
@@ -14,9 +14,12 @@ vector<vector<double>> processTrajectory(const vector<double>& map_waypoints_s, 
 ```
 
 First one generates valid velocity and lane number for ego vehicle and saves them as attributes of Vehicle class. Second method uses generated parameters to create smooth driving trajectory based on splines. You can find them in Vehicle.cpp file.
-`` setVehicleParams`` checks other vehicles position to infer which type of actions are needed to avoid collisions and safely change lines. The positions of all the other vehicles are analyzed relative to the ego vehicle. If the ego vehicle is within 30 meters of the vehicle in front, the boolean too_close is flagged true. If vehicles are within that margin on the left or right, car_left or car_right are flagged true, respectively. If a car is ahead within the gap, the lanes to the left and right are checked. If one of them is empty, the car will change lanes. Otherwise it will slow down.
+`` setVehicleParams`` checks other vehicles position to infer which type of actions are needed to avoid collisions and safely change lines. The positions of all the other vehicles are analyzed relative to the ego vehicle. If the ego vehicle is within 30 meters of the vehicle in front, the boolean too_close is flagged true. 
+If vehicles are within that margin on the left or right, car_left or car_right are flagged true, respectively. If a car is ahead within the gap, the lanes to the left and right are checked. If one of them is empty, the car will change lanes. Otherwise it will slow down.
 
 If the way in front of the car is clear, the car will speed up.
+
+``processTrajectory`` creates drivable trajectory using splines as it is explaine in the QA session for this project.
 
 In [main.cpp](./src/main.cpp) everything is pretty clear - creation of ego vehicle and the list of other vehicles followed by calls to the methods I have described above.
 
