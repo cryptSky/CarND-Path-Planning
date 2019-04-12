@@ -14,7 +14,7 @@ vector<vector<double>> processTrajectory(const vector<double>& map_waypoints_s, 
 ```
 
 First one generates valid velocity and lane number for ego vehicle and saves them as attributes of Vehicle class. Second method uses generated parameters to create smooth driving trajectory based on splines. You can find them in Vehicle.cpp file.
-```cpp setVehicleParams```  checks other vehicles position to infer which type of actions are needed to avoid collisions and safely change lines. The positions of all the other vehicles are analyzed relative to the ego vehicle. If the ego vehicle is within 30 meters of the vehicle in front, the boolean too_close is flagged true. If vehicles are within that margin on the left or right, car_left or car_right are flagged true, respectively. If a car is ahead within the gap, the lanes to the left and right are checked. If one of them is empty, the car will change lanes. Otherwise it will slow down.
+`` setVehicleParams`` checks other vehicles position to infer which type of actions are needed to avoid collisions and safely change lines. The positions of all the other vehicles are analyzed relative to the ego vehicle. If the ego vehicle is within 30 meters of the vehicle in front, the boolean too_close is flagged true. If vehicles are within that margin on the left or right, car_left or car_right are flagged true, respectively. If a car is ahead within the gap, the lanes to the left and right are checked. If one of them is empty, the car will change lanes. Otherwise it will slow down.
 
 If the way in front of the car is clear, the car will speed up.
 
@@ -22,7 +22,7 @@ In [main.cpp](./src/main.cpp) everything is pretty clear - creation of ego vehic
 
 ### Result
 
-Here you can check the [video]((https://youtu.be/iDKkFrOWz5A))
+Here you can check the [video](https://youtu.be/iDKkFrOWz5A)
 
 
 ## Basic Build Instructions
